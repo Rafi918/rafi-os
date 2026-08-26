@@ -1,0 +1,44 @@
+rules_version = '2';
+
+// =============================================================================
+// Firestore security rules for the Rafi OS "Ideas Box".
+// -----------------------------------------------------------------------------
+// These run on Google's servers and are the REAL gate for the `ideas`
+// collection — the frontend validation in app.js is only a convenience.
+//
+//   • Visitors may CREATE a submission, and only if it is exactly
+//     { name, idea, createdAt } with the right types/lengths and a
+//     server-set createdAt.
+//   • Nobody (no visitor) may read, list, update, or delete. You, the owner,
+//     read submissions in the Firebase console, which bypasses these rules.
+//
+// Publish with either:
+//   • Firebase console → Firestore Database → Rules → paste → Publish, or
+//   • Firebase CLI:  firebase deploy --only firestore:rules
+// =============================================================================
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /ideas/{docId} {
+      // CREATE only — with strict validation.
+      allow create: if
+        request.resource.data.keys().hasOnly(['name', 'idea', 'createdAt']) &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() >= 1 &&
+        request.resource.data.name.size() <= 80 &&
+        request.resource.data.idea is string &&
+        request.resource.data.idea.size() >= 1 &&
+        request.resource.data.idea.size() <= 2000 &&
+        // Forces the client to use serverTimestamp() — it resolves to request.time.
+        request.resource.data.createdAt == request.time;
+
+      // No reading, listing, editing, or deleting by anyone (visitors).
+      allow read, update, delete: if false;
+    }
+
+    // Everything else is denied by default (no other collections are used).
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

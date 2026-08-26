@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Rafi OS icon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f2530"/>
+      <stop offset="1" stop-color="#06121a"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5fd6ea"/>
+      <stop offset="1" stop-color="#3fbfd4"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <!-- Four rounded tiles: a modern, original nod to a desktop of windows -->
+  <rect x="14" y="14" width="15" height="15" rx="4" fill="url(#tile)"/>
+  <rect x="35" y="14" width="15" height="15" rx="4" fill="url(#tile)" opacity="0.75"/>
+  <rect x="14" y="35" width="15" height="15" rx="4" fill="url(#tile)" opacity="0.75"/>
+  <rect x="35" y="35" width="15" height="15" rx="4" fill="url(#tile)"/>
+</svg>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <title>Rafi OS — 𝙳𝙴𝚅 ⌯ 𝚁𝙰𝙵𝙸</title>
+  <meta name="description" content="Rafi's personal website — a modern, Windows-inspired desktop experience with a terminal, a music player, and more. 15-year-old developer, creator, and curious mind from Baghdad." />
+  <meta name="author" content="Rafi" />
+  <meta name="theme-color" content="#071c12" />
+  <meta name="color-scheme" content="dark light" />
+
+  <!-- Favicon (SVG, no external requests) -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+
+  <!-- Open Graph / social preview.
+       NOTE: for perfect previews, set an absolute URL for og:image and og:url
+       in your fork (see README). Relative paths work on most modern scrapers. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Rafi OS" />
+  <meta property="og:title" content="Rafi OS — a personal desktop on the web" />
+  <meta property="og:description" content="A modern Windows-inspired portfolio: draggable windows, a terminal, and a full-track music player. Fully static." />
+  <meta property="og:image" content="assets/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rafi OS — a personal desktop on the web" />
+  <meta name="twitter:description" content="A modern Windows-inspired portfolio: draggable windows, a terminal, and a full-track music player." />
+  <meta name="twitter:image" content="assets/og.png" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Accessible live region for status announcements (screen readers) -->
+  <div id="live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Skip link for keyboard users -->
+  <a href="#desktop" class="skip-link">Skip to desktop</a>
+
+  <!-- ========================= BOOT SCREEN ========================= -->
+  <section id="boot" class="boot" aria-label="System startup">
+    <div class="boot__inner">
+      <div class="boot__logo" aria-hidden="true">
+        <span class="boot__logo-glyph"></span>
+      </div>
+      <h1 class="boot__title">Rafi OS</h1>
+      <div class="boot__log" id="boot-log" role="status" aria-live="polite"></div>
+      <div class="boot__bar" aria-hidden="true"><span id="boot-bar-fill"></span></div>
+    </div>
+  </section>
+
+  <!-- ========================= WELCOME SCREEN ========================= -->
+  <section id="welcome" class="welcome" aria-label="Welcome" hidden>
+    <div class="welcome__card">
+      <div class="welcome__avatar-ring" aria-hidden="true">
+        <img id="welcome-avatar" class="welcome__avatar" alt="" width="112" height="112" />
+      </div>
+      <p class="welcome__hi">Hi, I’m</p>
+      <h1 class="welcome__name" id="welcome-name">Rafi</h1>
+      <p class="welcome__headline" id="welcome-headline">Welcome to Rafi’s World</p>
+      <p class="welcome__tagline" id="welcome-tagline"></p>
+      <button class="btn btn--primary welcome__start" id="welcome-start" type="button">
+        <span class="btn__icon" id="welcome-start-icon" aria-hidden="true"></span> Enter
+      </button>
+      <p class="welcome__hint">No sound plays until you choose it. Open “My Love Music” anytime.</p>
+    </div>
+  </section>
+
+  <!-- ========================= DESKTOP ========================= -->
+  <main id="desktop" class="desktop" aria-label="Desktop" hidden>
+    <!-- Desktop icon grid (populated by app.js) -->
+    <ul id="desktop-icons" class="desktop__icons" aria-label="Desktop icons"></ul>
+
+    <!-- Window layer (windows injected by the window manager) -->
+    <div id="windows" class="windows" aria-label="Open windows"></div>
+  </main>
+
+  <!-- ========================= START MENU ========================= -->
+  <div id="start-menu" class="start-menu" role="menu" aria-label="Start menu" hidden>
+    <div class="start-menu__header">
+      <span class="start-menu__avatar-ring" aria-hidden="true">
+        <img id="start-avatar" class="start-menu__avatar" alt="" width="44" height="44" />
+      </span>
+      <div class="start-menu__id">
+        <strong id="start-name">Rafi</strong>
+        <span id="start-username">@username</span>
+      </div>
+    </div>
+    <p class="start-menu__section">Pinned</p>
+    <div class="start-menu__grid" id="start-grid" role="none"></div>
+    <div class="start-menu__footer">
+      <button class="start-menu__foot-btn" id="start-settings" type="button" role="menuitem">
+        <span class="foot-ic" aria-hidden="true"></span> Settings
+      </button>
+      <button class="start-menu__foot-btn" id="start-lock" type="button" role="menuitem">
+        <span class="foot-ic" aria-hidden="true"></span> Lock / Welcome
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================= TASKBAR ========================= -->
+  <footer id="taskbar" class="taskbar" aria-label="Taskbar" hidden>
+    <button id="start-button" class="taskbar__start" type="button"
+            aria-haspopup="menu" aria-expanded="false" aria-label="Open Start menu">
+      <span class="taskbar__start-glyph" aria-hidden="true"></span>
+      <span class="taskbar__start-label">Start</span>
+    </button>
+
+    <div id="taskbar-tasks" class="taskbar__tasks" aria-label="Open windows"></div>
+
+    <div class="taskbar__tray">
+      <!-- Music mini-widget -->
+      <button id="tray-music" class="tray__music" type="button"
+              aria-label="Music player: nothing playing">
+        <span id="tray-music-icon" class="tray__music-icon" aria-hidden="true"></span>
+        <span class="tray__music-meta">
+          <span id="tray-music-title" class="tray__music-title">My Love Music</span>
+          <span id="tray-music-state" class="tray__music-state">paused</span>
+        </span>
+        <span id="tray-music-toggle" class="tray__music-toggle" aria-hidden="true"></span>
+      </button>
+
+      <!-- Global sound mute/unmute (system sounds + music) -->
+      <button id="tray-mute" class="tray__btn" type="button"
+              aria-label="Mute all sound" aria-pressed="false" title="Sound">
+        <span class="tray__ic" aria-hidden="true"></span>
+      </button>
+
+      <!-- Text-size / UI scale -->
+      <button id="tray-scale" class="tray__btn" type="button"
+              aria-label="Change interface size" title="Interface size">
+        <span class="tray__ic" aria-hidden="true"></span>
+      </button>
+
+      <!-- Theme -->
+      <button id="tray-theme" class="tray__btn" type="button"
+              aria-label="Change theme" title="Theme">
+        <span class="tray__ic" aria-hidden="true"></span>
+      </button>
+
+      <!-- Language switcher (EN / عربي) -->
+      <button id="tray-lang" class="tray__btn tray__lang" type="button"
+              aria-label="Change language" title="Language">
+        <span class="tray__ic" aria-hidden="true"></span>
+        <span class="tray__lang-label">EN</span>
+      </button>
+
+      <!-- Clock -->
+      <button id="tray-clock" class="tray__clock" type="button" aria-label="Date and time">
+        <span id="tray-time">--:--</span>
+        <span id="tray-date">--- --</span>
+      </button>
+    </div>
+  </footer>
+
+  <!-- Popover: interface scale -->
+  <div id="scale-pop" class="popover" role="dialog" aria-label="Interface size" hidden>
+    <p class="popover__title">Interface size</p>
+    <div class="popover__row">
+      <button class="chip" data-scale="0.9" type="button">Small</button>
+      <button class="chip" data-scale="1" type="button">Default</button>
+      <button class="chip" data-scale="1.1" type="button">Large</button>
+      <button class="chip" data-scale="1.25" type="button">Larger</button>
+    </div>
+  </div>
+
+  <!-- Popover: theme -->
+  <div id="theme-pop" class="popover" role="dialog" aria-label="Theme" hidden>
+    <p class="popover__title">Theme</p>
+    <div class="popover__col">
+      <button class="chip chip--wide" data-theme="dark" type="button"><span class="chip__ic" aria-hidden="true"></span> Modern Dark</button>
+      <button class="chip chip--wide" data-theme="light" type="button"><span class="chip__ic" aria-hidden="true"></span> Modern Light</button>
+      <button class="chip chip--wide" data-theme="contrast" type="button"><span class="chip__ic" aria-hidden="true"></span> High Contrast</button>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div id="toasts" class="toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- Single shared audio element for the music player -->
+  <audio id="audio" preload="metadata"></audio>
+
+  <!-- Scripts: data + translations first (define globals), then the app. Relative paths only. -->
+  <script src="data.js"></script>
+  <script src="translations.js"></script>
+  <script src="app.js"></script>
+  <!-- Cloud Firestore bridge for the Ideas Box. type="module" is required by the
+       Firebase browser SDK; it loads deferred, after app.js, and only exposes
+       window.RafiIdeas.submit(). No secrets here — see firebase-ideas.js. -->
+  <script type="module" src="firebase-ideas.js"></script>
+</body>
+</html>

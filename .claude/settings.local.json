@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -oE '\\\\$\\\\\\(\"#[a-zA-Z0-9_-]+\"' app.js)",
+      "Bash(node *)",
+      "Bash(timeout 200 bash -c 'npm install playwright-core --no-save --silent 2>&1 | tail -2; npx --yes playwright install chromium 2>&1 | tail -5')",
+      "Bash(awk '/const SVG = \\\\{/,/^  \\\\};/' app.js)",
+      "Read(//tmp/**)",
+      "Bash(npm -v)",
+      "Read(//tmp/node_modules/**)",
+      "Bash(npm i *)",
+      "Bash(pkill -f \"http.server 8123\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8123/index.html)",
+      "Bash(python3 *)",
+      "Bash(sleep *)",
+      "Bash(echo *)",
+      "Bash(unzip -o -q nm.zip)",
+      "Bash(ffprobe -version)",
+      "Bash(pip install *)",
+      "WebFetch(domain:www.youtube.com)",
+      "Bash(awk '/\\\\.skip-link ?\\\\{/,/\\\\}/' styles.css)",
+      "Bash(awk '/^\\\\.popover ?\\\\{/,/\\\\}/' styles.css)",
+      "Bash(awk '/^\\\\.toasts ?\\\\{/,/\\\\}/' styles.css)",
+      "Bash(curl -s -o /dev/null -w \"server HTTP %{http_code}\\\\n\" http://localhost:8123/index.html)",
+      "Bash(pkill -f \"http.server\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8000/index.html)"
+    ]
+  }
+}
